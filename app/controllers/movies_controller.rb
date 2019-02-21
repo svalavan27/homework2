@@ -12,11 +12,24 @@ class MoviesController < ApplicationController
 
   def index
     #@movies = Movie.all
-    if params[:moviesort_by] == nil
-      @movies = Movie.all
+    #if params[:moviesort_by] == nil
+     # @movies = Movie.all
+    #else
+     #@movies = Movie.order(params[:moviesort_by])
+     #@moviesort_column = params[:moviesort_by]
+    #end
+        @movies = Movie.all.order(params[:moviesort_by])
+    if params[:ratings]
+      @movies = Movie.where({rating:  params[:ratings].keys }).order(params[:moviesort_by])
+    end
+    @moviesort_column = params[:moviesort_by]
+    @all_ratings = Movie.all_movieratings
+    @set_movieratings = params[:ratings]
+    if !@set_movieratings
+      @set_movieratings = Hash.new
+            @execute_first = true
     else
-      @movies = Movie.order(params[:moviesort_by])
-      @moviesort_column = params[:moviesort_by]
+            @execute_first = false
     end
   end
 
